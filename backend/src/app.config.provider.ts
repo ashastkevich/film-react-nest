@@ -7,7 +7,7 @@ export const configProvider = {
       driver: configService.get<string>('DATABASE_DRIVER', 'mongodb'),
       url: configService.get<string>(
         'DATABASE_URL',
-        'mongodb://localhost:27017/films',
+        'mongodb://localhost:27017/afisha',
       ),
     },
   }),
