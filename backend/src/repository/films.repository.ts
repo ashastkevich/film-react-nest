@@ -1,16 +1,21 @@
 import { Model, Connection } from 'mongoose';
-import { Film, Schedule } from '../films/dto/films.dto';
+import { GetFilmDto } from '../films/dto/get-film.dto';
 import {
   FilmDocument,
   FilmSchema,
   toFilmDto,
   toScheduleDto,
 } from '../films/films.schema';
+import { GetScheduleDto } from 'src/films/dto/get-schedule.dto';
+import { BadRequestException } from '@nestjs/common';
 
 export interface IFilmsRepository {
-  findAll(): Promise<Film[]>;
-  findSchedule(filmId: string): Promise<Schedule[]>;
-  findSession(filmId: string, sessionId: string): Promise<Schedule | null>;
+  findAll(): Promise<GetFilmDto[]>;
+  findSchedule(filmId: string): Promise<GetScheduleDto[]>;
+  findSession(
+    filmId: string,
+    sessionId: string,
+  ): Promise<GetScheduleDto | null>;
   markSeatTaken(filmId: string, sessionId: string, seat: string): Promise<void>;
 }
 
@@ -27,21 +32,24 @@ export class MongoDBFilmsRepository implements IFilmsRepository {
     );
   }
 
-  async findAll(): Promise<Film[]> {
+  async findAll(): Promise<GetFilmDto[]> {
     const docs = await this.filmModel.find().exec();
     return docs.map(toFilmDto);
   }
 
-  async findSchedule(filmId: string): Promise<Schedule[]> {
+  async findSchedule(filmId: string): Promise<GetScheduleDto[]> {
     const doc = await this.filmModel.findOne({ id: filmId }).exec();
-    if (!doc) return [];
+    if (!doc) {
+      console.log(`Film with id ${filmId} not found`);
+      throw new BadRequestException(`Film with id ${filmId} not found`);
+    }
     return doc.schedule.map(toScheduleDto);
   }
 
   async findSession(
     filmId: string,
     sessionId: string,
-  ): Promise<Schedule | null> {
+  ): Promise<GetScheduleDto | null> {
     const doc = await this.filmModel
       .findOne({ id: filmId, 'schedule.id': sessionId })
       .exec();

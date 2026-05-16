@@ -15,6 +15,7 @@ import {
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: '.env',
       isGlobal: true,
       cache: true,
     }),

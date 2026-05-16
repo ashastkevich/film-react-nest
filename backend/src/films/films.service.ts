@@ -3,7 +3,8 @@ import {
   FILMS_REPOSITORY,
   IFilmsRepository,
 } from '../repository/films.repository';
-import { Film, Schedule } from './dto/films.dto';
+import { GetFilmDto } from './dto/get-film.dto';
+import { GetScheduleDto } from './dto/get-schedule.dto';
 
 @Injectable()
 export class FilmsService {
@@ -12,11 +13,11 @@ export class FilmsService {
     private readonly filmsRepository: IFilmsRepository,
   ) {}
 
-  async findAll(): Promise<Film[]> {
+  async findAll(): Promise<GetFilmDto[]> {
     return this.filmsRepository.findAll();
   }
 
-  async findSchedule(filmId: string): Promise<Schedule[]> {
+  async findSchedule(filmId: string): Promise<GetScheduleDto[]> {
     return this.filmsRepository.findSchedule(filmId);
   }
 }

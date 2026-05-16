@@ -4,7 +4,11 @@ import {
   FILMS_REPOSITORY,
   IFilmsRepository,
 } from '../repository/films.repository';
-import { OrderRequest, OrderResponse, TicketResponse } from './dto/order.dto';
+import {
+  OrderRequest,
+  OrderResponse,
+  TicketResponse,
+} from './dto/create-order.dto';
 
 @Injectable()
 export class OrderService {

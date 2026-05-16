@@ -1,5 +1,6 @@
 import { Schema, Document } from 'mongoose';
-import { Film, Schedule } from './dto/films.dto';
+import { GetFilmDto } from './dto/get-film.dto';
+import { GetScheduleDto } from './dto/get-schedule.dto';
 
 export interface ScheduleSubdocument {
   id: string;
@@ -50,7 +51,7 @@ export const FilmSchema = new Schema<FilmDocument>({
   schedule: { type: [ScheduleSchema], default: [] },
 });
 
-export function toFilmDto(doc: FilmDocument): Film {
+export function toFilmDto(doc: FilmDocument): GetFilmDto {
   return {
     id: doc.id,
     rating: doc.rating,
@@ -64,7 +65,7 @@ export function toFilmDto(doc: FilmDocument): Film {
   };
 }
 
-export function toScheduleDto(subdoc: ScheduleSubdocument): Schedule {
+export function toScheduleDto(subdoc: ScheduleSubdocument): GetScheduleDto {
   return {
     id: subdoc.id,
     daytime: subdoc.daytime,
