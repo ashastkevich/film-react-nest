@@ -5,6 +5,7 @@ import {
 } from '../repository/films.repository';
 import { GetFilmDto } from './dto/get-film.dto';
 import { GetScheduleDto } from './dto/get-schedule.dto';
+import { BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class FilmsService {
@@ -18,6 +19,10 @@ export class FilmsService {
   }
 
   async findSchedule(filmId: string): Promise<GetScheduleDto[]> {
-    return this.filmsRepository.findSchedule(filmId);
+    const doc = await this.filmsRepository.findSchedule(filmId);
+    if (!doc) {
+      throw new BadRequestException(`Film with id ${filmId} not found`);
+    }
+    return doc;
   }
 }

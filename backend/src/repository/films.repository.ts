@@ -7,7 +7,6 @@ import {
   toScheduleDto,
 } from '../films/films.schema';
 import { GetScheduleDto } from 'src/films/dto/get-schedule.dto';
-import { BadRequestException } from '@nestjs/common';
 
 export interface IFilmsRepository {
   findAll(): Promise<GetFilmDto[]>;
@@ -39,10 +38,6 @@ export class MongoDBFilmsRepository implements IFilmsRepository {
 
   async findSchedule(filmId: string): Promise<GetScheduleDto[]> {
     const doc = await this.filmModel.findOne({ id: filmId }).exec();
-    if (!doc) {
-      console.log(`Film with id ${filmId} not found`);
-      throw new BadRequestException(`Film with id ${filmId} not found`);
-    }
     return doc.schedule.map(toScheduleDto);
   }
 
