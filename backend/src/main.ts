@@ -3,9 +3,11 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
 import 'dotenv/config';
+import { ValidationPipe } from '@nestjs/common/pipes/validation.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api/afisha');
   app.enableCors();
   app.useStaticAssets(join(__dirname, '..', 'public', 'content', 'afisha'), {

@@ -1,24 +1,23 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import * as mongoose from 'mongoose';
 
-import { AppConfig, configProvider } from './app.config.provider';
+import { configProvider } from './app.config.provider';
+import { DatabaseModule } from './database/database.module';
 import { FilmsController } from './films/films.controller';
 import { OrderController } from './order/order.controller';
 import { FilmsService } from './films/films.service';
 import { OrderService } from './order/order.service';
-import {
-  FILMS_REPOSITORY,
-  MongoDBFilmsRepository,
-} from './repository/films.repository';
+import { FILMS_REPOSITORY } from './repository/films.repository';
+import { TypeORMFilmsRepository } from './repository/typeorm-films.repository';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env',
+      envFilePath: '.env postgres',
       isGlobal: true,
       cache: true,
     }),
+    DatabaseModule,
   ],
   controllers: [FilmsController, OrderController],
   providers: [
@@ -27,13 +26,7 @@ import {
     OrderService,
     {
       provide: FILMS_REPOSITORY,
-      useFactory: async (config: AppConfig) => {
-        const connection = await mongoose
-          .createConnection(config.database.url)
-          .asPromise();
-        return new MongoDBFilmsRepository(connection);
-      },
-      inject: ['CONFIG'],
+      useExisting: TypeORMFilmsRepository,
     },
   ],
 })
