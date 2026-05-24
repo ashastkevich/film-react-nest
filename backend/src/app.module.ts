@@ -13,7 +13,7 @@ import { TypeORMFilmsRepository } from './repository/typeorm-films.repository';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env postgres',
+      envFilePath: '.env',
       isGlobal: true,
       cache: true,
     }),

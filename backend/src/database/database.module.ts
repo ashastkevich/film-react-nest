@@ -9,19 +9,16 @@ import { TypeORMFilmsRepository } from '../repository/typeorm-films.repository';
   imports: [
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        const parsed = new URL(config.get<string>('DATABASE_URL'));
-        return {
-          type: 'postgres',
-          host: parsed.hostname,
-          port: parseInt(parsed.port || '5432', 10),
-          database: parsed.pathname.replace(/^\//, ''),
-          username: config.get<string>('DATABASE_USERNAME'),
-          password: config.get<string>('DATABASE_PASSWORD'),
-          entities: [Film, Schedule],
-          synchronize: false,
-        };
-      },
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        host: config.get<string>('DATABASE_HOST'),
+        port: config.get<number>('DATABASE_PORT'),
+        database: config.get<string>('DATABASE_NAME'),
+        username: config.get<string>('DATABASE_USERNAME'),
+        password: config.get<string>('DATABASE_PASSWORD'),
+        entities: [Film, Schedule],
+        synchronize: false,
+      }),
     }),
     TypeOrmModule.forFeature([Film, Schedule]),
   ],
