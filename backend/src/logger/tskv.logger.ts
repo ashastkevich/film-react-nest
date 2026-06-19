@@ -2,7 +2,7 @@ import { LoggerService, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TskvLogger implements LoggerService {
-  formatMessage(level: string, message: any, ...optionalParams: any[]) {
+  formatMessage(level: string, message: unknown, ...optionalParams: unknown[]) {
     const fields = [`level=${level}`, `message=${message}`];
     if (optionalParams.length > 0) {
       fields.push(`params=${JSON.stringify(optionalParams)}`);
@@ -10,27 +10,27 @@ export class TskvLogger implements LoggerService {
     return fields.join('\t') + '\n';
   }
 
-  log(message: any, ...optionalParams: any[]) {
+  log(message: unknown, ...optionalParams: unknown[]) {
     console.log(this.formatMessage('log', message, ...optionalParams));
   }
 
-  error(message: any, ...optionalParams: any[]) {
+  error(message: unknown, ...optionalParams: unknown[]) {
     console.log(this.formatMessage('error', message, ...optionalParams));
   }
 
-  warn(message: any, ...optionalParams: any[]) {
+  warn(message: unknown, ...optionalParams: unknown[]) {
     console.log(this.formatMessage('warn', message, ...optionalParams));
   }
 
-  debug(message: any, ...optionalParams: any[]) {
+  debug(message: unknown, ...optionalParams: unknown[]) {
     console.log(this.formatMessage('debug', message, ...optionalParams));
   }
 
-  verbose(message: any, ...optionalParams: any[]) {
+  verbose(message: unknown, ...optionalParams: unknown[]) {
     console.log(this.formatMessage('verbose', message, ...optionalParams));
   }
 
-  fatal(message: any, ...optionalParams: any[]) {
+  fatal(message: unknown, ...optionalParams: unknown[]) {
     console.log(this.formatMessage('fatal', message, ...optionalParams));
   }
 }
