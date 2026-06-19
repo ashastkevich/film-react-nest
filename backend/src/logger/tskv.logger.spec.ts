@@ -1,6 +1,6 @@
 import { TskvLogger } from './tskv.logger';
 
-describe('JsonLogger', () => {
+describe('TskvLogger', () => {
   const tskvLogger = new TskvLogger();
   let log: jest.SpyInstance;
 

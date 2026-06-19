@@ -16,7 +16,7 @@ describe('JsonLogger', () => {
     const expectedResult = JSON.stringify({
       level: 'warn',
       message: 'test message',
-      optionalParams: 'optional param',
+      optionalParams: ['optional param'],
     });
     expect(log).toHaveBeenCalledWith(expectedResult);
   });
@@ -25,7 +25,7 @@ describe('JsonLogger', () => {
     const expectedResult = JSON.stringify({
       level: 'error',
       message: 'test message',
-      optionalParams: 'optional param',
+      optionalParams: ['optional param'],
     });
     expect(log).toHaveBeenCalledWith(expectedResult);
   });
