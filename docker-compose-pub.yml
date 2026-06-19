@@ -34,6 +34,8 @@ services:
       VITE_CDN_URL: /content/afisha
     volumes:
       - frontend_build:/app/dist
+    restart: unless-stopped
+
 
   backend:
     image: 'ghcr.io/ashastkevich/film-react-nest-backend:latest'
@@ -53,6 +55,8 @@ services:
       - internal
     depends_on:
       - database
+    restart: unless-stopped
+
   
   server:
     image: 'ghcr.io/ashastkevich/film-react-nest-server:latest'
@@ -65,6 +69,8 @@ services:
       - backend
     networks:
       - internal
+    restart: unless-stopped
+
 
 volumes:
   db_data:
