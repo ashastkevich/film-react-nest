@@ -2,9 +2,7 @@ services:
   database:
     image: postgres:16.4
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
+      - .env
     volumes:
       - db_data:/var/lib/postgresql/data
 
@@ -19,8 +17,7 @@ services:
     ports:
       - '8080:80'
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      - .env
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     networks:
@@ -29,9 +26,7 @@ services:
   frontend:
     image: 'ghcr.io/ashastkevich/film-react-nest-frontend:latest'
     environment:
-      VITE_BASE_URL: /
-      VITE_API_URL: /api/afisha
-      VITE_CDN_URL: /content/afisha
+      - .env
     volumes:
       - frontend_build:/app/dist
     restart: unless-stopped
@@ -40,15 +35,7 @@ services:
   backend:
     image: 'ghcr.io/ashastkevich/film-react-nest-backend:latest'
     environment:
-      PORT: 3000
-      DEBUG: '*'
-      DATABASE_DRIVER: ${DATABASE_DRIVER}
-      DATABASE_HOST: database
-      DATABASE_PORT: 5432
-      DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_USERNAME: ${DATABASE_USERNAME}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      DATABASE_URL: 'postgres://database:5432/${DATABASE_NAME}'
+      - .env
     ports:
       - 3000:3000
     networks:
