@@ -1,36 +1,27 @@
-# FILM!
+http://89.169.190.133/
 
-## Установка
+# Production запуск
 
-### MongoDB
+1. Создайте файл окружения для production, например `.env`, используя переменные из `.env.example`:
+   - `DATABASE_DRIVER`
+   - `DATABASE_HOST`
+   - `DATABASE_PORT`
+   - `DATABASE_NAME`
+   - `DATABASE_USERNAME`
+   - `DATABASE_PASSWORD`
+   - `POSTGRES_USER`
+   - `POSTGRES_PASSWORD`
+   - `POSTGRES_DB`
+   - `PGADMIN_DEFAULT_EMAIL`
+   - `PGADMIN_DEFAULT_PASSWORD`
+   - `OWNER`
 
-Установите MongoDB скачав дистрибутив с официального сайта или с помощью пакетного менеджера вашей ОС. Также можно воспользоваться Docker (см. ветку `feat/docker`.
+2. Запустите production-сервисы с помощью Docker Compose:
+   docker compose -f docker-compose-pub.yml up -d
 
-Выполните скрипт `test/mongodb_initial_stub.js` в консоли `mongo`.
-
-### Бэкенд
-
-Перейдите в папку с исходным кодом бэкенда
-
-`cd backend`
-
-Установите зависимости (точно такие же, как в package-lock.json) помощью команд
-
-`npm ci` или `yarn install --frozen-lockfile`
-
-Создайте `.env` файл из примера `.env.example`, в нём укажите:
-
-* `DATABASE_DRIVER` - тип драйвера СУБД - в нашем случае это `mongodb` 
-* `DATABASE_URL` - адрес СУБД MongoDB, например `mongodb://127.0.0.1:27017/practicum`.  
-
-MongoDB должна быть установлена и запущена.
-
-Запустите бэкенд:
-
-`npm start:debug`
-
-Для проверки отправьте тестовый запрос с помощью Postman или `curl`.
-
-
-
-
+3. Используемые production-образы:
+   - `ghcr.io/ashastkevich/film-react-nest-frontend:latest`
+   - `ghcr.io/ashastkevich/film-react-nest-backend:latest`
+   - `ghcr.io/ashastkevich/film-react-nest-server:latest`
+   - `postgres:16.4`
+   - `dpage/pgadmin4`

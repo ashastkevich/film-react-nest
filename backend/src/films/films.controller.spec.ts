@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FilmsController } from './films.controller';
 import { FilmsService } from './films.service';
-import { FILMS_REPOSITORY } from '../repository/films.repository';
+import { fixtures } from './films.fixtures';
 
 describe('FilmsController', () => {
   let controller: FilmsController;
@@ -11,7 +11,17 @@ describe('FilmsController', () => {
       controllers: [FilmsController],
       providers: [
         FilmsService,
-        { provide: FILMS_REPOSITORY, useValue: { findAll: async () => [] } },
+        {
+          provide: FilmsService,
+          useValue: {
+            findAll: jest
+              .fn()
+              .mockResolvedValue(fixtures.mockFilmsResponse.items),
+            findSchedule: jest
+              .fn()
+              .mockResolvedValue(fixtures.mockScheduleResponse.items),
+          },
+        },
       ],
     }).compile();
 
@@ -20,5 +30,16 @@ describe('FilmsController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  it('should find all films', async () => {
+    const result = await controller.findAll();
+    expect(result).toEqual(fixtures.mockFilmsResponse);
+  });
+
+  it('should find schedule for a film', async () => {
+    const filmId = '123e4567-e89b-12d3-a456-426614174000';
+    const result = await controller.findSchedule(filmId);
+    expect(result).toEqual(fixtures.mockScheduleResponse);
   });
 });
